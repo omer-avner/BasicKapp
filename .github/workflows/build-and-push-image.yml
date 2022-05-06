@@ -26,7 +26,7 @@ jobs:
           context: .
           push: true
           tags: |
-            docker.pkg.github.com/${{ github.repository.lowercase }}/pyhton-app:${{ github.sha }}
-            docker.pkg.github.com/${{ github.repository.lowercase }}/python-app:${{ github.event.release.tag_name }}
+            docker.pkg.github.com/basickapp/pyhton-app:${{ github.sha }}
+            docker.pkg.github.com/basickapp/python-app:${{ github.event.release.tag_name }}
     
 
