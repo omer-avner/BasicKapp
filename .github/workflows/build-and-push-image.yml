@@ -27,6 +27,3 @@ jobs:
           push: true
           tags: |
             ghcr.io/omer-avner/pyhton-app:${{ github.sha }}
-            ghcr.io/omer-avner/python-app:${{ github.event.release.tag_name }}
-    
-
