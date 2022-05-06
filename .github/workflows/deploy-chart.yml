@@ -15,6 +15,9 @@ jobs:
         with:
           version: v3.5.0
         id: install
+
+      - name: Check out the repo
+        uses: actions/checkout@v2
      
       - name: Deploy the chart
         uses: craftech-io/eks-helm-deploy-action@v1
