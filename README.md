@@ -19,6 +19,8 @@ The application's main service is a simple python http server serving files from
 try building the image as u will `docker build -t python-app:v0.0.2 --build-arg SERVER_BASE_DIR=/ image/`
 try running `docker run -dit -p 8000:8000 --name python python-app:v0.0.2 --directory /usr/local/`
 
+notice that the entrypoint of the image determines that the http server will *always bind to all interfaces at port 8000* (thats why `EXPOSE 8000/tcp` is mentioned explicitly in the Dockerfile), but since were using an `ENTRYPOINT` instead of a simple `CMD` command were able to add runtime arguments such as `--directory <dir_path>` in order to change the default server base directory (SERVER_BASE_DIR).
+
 
 ## About the application's chart
 
