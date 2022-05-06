@@ -26,7 +26,7 @@ jobs:
           context: .
           push: true
           tags: |
-            docker.pkg.github.com/omer-avner/pyhton-app:${{ github.sha }}
-            docker.pkg.github.com/omer-avner/python-app:${{ github.event.release.tag_name }}
+            ghcr.io/omer-avner/pyhton-app:${{ github.sha }}
+            ghcr.io/omer-avner/python-app:${{ github.event.release.tag_name }}
     
 
