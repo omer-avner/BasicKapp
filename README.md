@@ -1,7 +1,7 @@
 # BasicKapp
 a simple python application ready to be deployed on EKS
 
-### About the python app's image
+## About the python app's image
 
 ```dockerfile
 FROM python:3-slim
@@ -20,6 +20,39 @@ try building the image as u will `docker build -t python-app:v0.0.2 --build-arg 
 try running `docker run -dit -p 8000:8000 --name python python-app:v0.0.2 --directory /usr/local/`
 
 
-### About the application's chart
+## About the application's chart
 
-### About the CI/CD workflow
+## About the CI/CD workflow
+This repo containes two different workflows:
+- build-and-push-image
+- update-and-deploy-chart
+
+### build-and-push-image
+The build-and-push workflow is a simple ci procedure that's triggered in any push to main branch that contains changes to the `image` directory. The workflow contains the following steps:
+1. Checking out the repo- this way we can use the repo's directory structure as part of our build proccess.
+```yml
+      - name: Check out the repo
+        uses: actions/checkout@v2
+```
+2. Logging into the registry- we need to access and push the new image to the repo using the pushing account's PAT and username.
+```yml
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+```
+3. building the image and pushing it- were using a built-in action that uses the `image/Dockerfile` and pushed a new tag based on the current commit's sha.
+```yml
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          file: image/Dockerfile
+          context: .
+          push: true
+          tags: |
+            ghcr.io/omer-avner/pyhton-app:${{ github.sha }}
+```
+
+
