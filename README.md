@@ -59,5 +59,7 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
 
 ### deploy-chart
 The deploy-chart workflow is a simple cd procedure that either installs or upgrades the application's Helm Chart over an EKS cluster. The workflow accures at any push to main branch that containes changes to the `chart/python-application` directory and its composed of the following steps:
-1. Setting up helm- 
+1. Not setting up helm- the assignment was to setup helm but i found a more simple action that runs an image that already contains helm. The helm image is rebuilt at any action trigger, might take longer but its more secure.
+2. Checking out the repo- for obvious reasons we need the files in this repo.
+3. Configuring AWS creds- there are a few MUST HAVE enviorment vars that we need to create for the aws CLI. Helm 
  to create the relevant environment secrets
