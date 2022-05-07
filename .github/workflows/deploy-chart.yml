@@ -9,7 +9,7 @@ jobs:
   deploy_to_eks:
     name: Set up helm and deploy chart to eks
     runs-on: ubuntu-latest
-    enviorment: eks
+    environment: eks
     steps:
       - name: Set up Helm
         uses: azure/setup-helm@v1
