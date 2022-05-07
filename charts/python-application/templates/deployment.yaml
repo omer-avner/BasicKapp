@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: python-app-deployment
+  name: {{ .Values.pythonApp.name -}}-deployment
   namespace: {{ .Values.namespace }}
   labels:
     {{- include "pythonApp.labels" . }} 
@@ -16,16 +16,16 @@ spec:
         {{- include "pythonApp.labels" . | indent 4 }}
     spec:
       containers:
-      - name: python-app
+      - name: {{ .Values.pythonApp.name }}
         image: {{ .Values.pythonApp.image }}:{{ .Values.pythonApp.tag }}
         ports:
         - containerPort: 8000
         volumeMounts:
-        - name: python-application-volume
-          mountPath: "/root"
+        - name: {{ .Values.pythonApp.name -}}-volume
+          mountPath: {{ .Values.pythonApp.baseDir }}
         command: ["python3"]
-        args: ["-m", "http.server", "--bind", "0.0.0.0", "8000", "--directory", "/root"]
+        args: ["-m", "http.server", "--bind", "0.0.0.0", "8000", "--directory", {{ .Values.pythonApp.baseDir }}]
       volumes:
-        - name: python-application-volume
+        - name: {{ .Values.pythonApp.name -}}-volume
           configMap:
-            name: python-application-configmap
+            name: {{ .Values.pythonApp.name -}}-configmap

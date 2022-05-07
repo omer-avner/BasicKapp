@@ -1,5 +1,7 @@
 namespace: omer
 pythonApp:
+  name: python-application
   image: ghcr.io/omer-avner/pyhton-app
   tag: c6df5cacf035a52f9931c044ff291572b86079b8 
+  baseDir: '"/root"'
 

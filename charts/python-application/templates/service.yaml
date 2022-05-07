@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: python-app-service
+  name: {{ .Values.pythonApp.name -}}-service
   namespace: {{ .Values.namespace }}
 spec:
   selector:
