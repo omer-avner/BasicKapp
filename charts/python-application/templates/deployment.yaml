@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python-app-deployment
-  namespace: omer
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "pythonApp.labels" . }} 
 spec:
