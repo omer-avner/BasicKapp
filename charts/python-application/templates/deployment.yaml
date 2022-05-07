@@ -4,16 +4,16 @@ metadata:
   name: python-app-deployment
   namespace: omer
   labels:
-    {{ include "pythonApp.labels" . }}
+    {{- include "pythonApp.labels" . }} 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{ include "pythonApp.labels" . }}
+      {{- include "pythonApp.labels" . }}
   template:
     metadata:
       labels:
-        {{ include "pythonApp.labels" . }}
+        {{- include "pythonApp.labels" . }}
     spec:
       containers:
       - name: python-app

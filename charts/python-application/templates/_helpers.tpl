@@ -1,4 +1,4 @@
 {{- define "pythonApp.labels" }}
-  app: python-app
+    app: python-app
 {{- end }}
 
