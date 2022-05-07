@@ -10,5 +10,5 @@ spec:
   ports:
     - protocol: TCP
       targetPort: 8000
-      port: 8000      
+      port: 80     
 

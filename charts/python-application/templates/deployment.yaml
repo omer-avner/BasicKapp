@@ -4,19 +4,19 @@ metadata:
   name: python-app-deployment
   namespace: omer
   labels:
-    app: python-app
+    {{ include "pythonApp.lables" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: python-app
+      {{ include "pythonApp.lables" . }}
   template:
     metadata:
       labels:
-        app: python-app
+        {{ include "pythonApp.lables" . }}
     spec:
       containers:
       - name: python-app
-        image: ghcr.io/omer-avner/pyhton-app:c6df5cacf035a52f9931c044ff291572b86079b8
+        image: {{ .Values.pythonApp.image }}:{{ .Values.pythonApp.tag }}
         ports:
         - containerPort: 8000
