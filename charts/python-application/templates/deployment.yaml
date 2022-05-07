@@ -1,4 +1,3 @@
-#
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -21,3 +20,12 @@ spec:
         image: {{ .Values.pythonApp.image }}:{{ .Values.pythonApp.tag }}
         ports:
         - containerPort: 8000
+        volumeMounts:
+        - name: python-application-volume
+          mountPath: "/root"
+        command: ["python3"]
+        args: ["-m", "http.server", "--bind", "0.0.0.0", "8000", "--directory", "/root"]
+      volumes:
+        - name: python-application-volume
+          configMap:
+            name: python-application-configmap
