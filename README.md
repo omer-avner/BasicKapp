@@ -110,7 +110,7 @@ The deploy-chart workflow is a simple cd procedure that either installs or upgra
 Lets begin by testing this repo's different workflows:
 - In order to trigger the build-and-push-image workflow all we need to do is make changes in the `/image` dir and push them to the main branch. We can try changing the `$SERVER_BASE_DIR` argument in the Dockerfile and a new image will be built and pushed to ghcr.io/omer-avner/pyhton-app repo with the current push's commit sha.
 
-- In order to trigger the deploy-chart workflow all we need to do is make changes in the `charts/python-application` fir and push them to main branch. We can try changing the **pythonApp.indexHtml** template in `_helpers.tpl`, this should trigger a helm upgrade, and after restarting the python-application's pod we could see the new html data in our browser.
+- In order to trigger the deploy-chart workflow all we need to do is make changes in the `charts/python-application` dir and push them to main branch. We can try changing the **pythonApp.indexHtml** template in `_helpers.tpl`, this should trigger a helm upgrade, and after restarting the python-application's pod we could see the new html data in our browser.
 
 Now we can try and reach the application trough our own browser:
 1. Run `kubectl get svc -n omer` to get the LB service's hostname. You should see an `EXTERNAL-IP` similer to this (this is the auto generated hostname): `a520894768d35449ba6ef2f15ecbd3c6-219064021.us-east-1.elb.amazonaws.com`
