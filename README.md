@@ -30,7 +30,7 @@ This repo containes two different workflows:
 - deploy-chart
 
 ### build-and-push-image
-The build-and-push workflow is a simple ci procedure that's triggered in any push to main branch that contains changes to the `image` directory. The workflow contains the following steps:
+The build-and-push workflow is a simple ci procedure that's triggered in any push to main branch that contains changes to the `image` directory. The workflow is composed of the following steps:
 1. Checking out the repo- this way we can use the repo's directory structure as part of our build proccess.
 ```yml
       - name: Check out the repo
@@ -58,4 +58,6 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
 ```
 
 ### deploy-chart
-The deploy-chart workflow is a simple cd procedure that either installs or upgrades the application's Helm Chart over an EKS cluster.
+The deploy-chart workflow is a simple cd procedure that either installs or upgrades the application's Helm Chart over an EKS cluster. The workflow accures at any push to main branch that containes changes to the `chart/python-application` directory and its composed of the following steps:
+1. Setting up helm- 
+ to create the relevant environment secrets
