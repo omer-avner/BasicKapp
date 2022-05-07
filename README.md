@@ -1,8 +1,7 @@
 # BasicKapp
-a simple python application ready to be deployed on EKS
+A simple python application ready to be deployed on EKS.
 
 ## About the python app's image
-
 ```dockerfile
 FROM python:3-slim
 
@@ -16,11 +15,11 @@ ENTRYPOINT ["python3", "-m", "http.server", "--bind", "0.0.0.0", "8000"]
 ```
 The application's main service is a simple python http server serving files from a local directory tree. Since the image's main proccess will run python were using a slim version of the python3 image (slim version will reduce security risks and storage space exhaustion). The files displayed via the http server are sourced in the main proccess's workdir which  means that the image's default workdir will also be the default base directory of the http server. For better abstraction i've created a Dockerfile argument for the server's default workdir, this way we could easily override the default workdir at the image build time (see the said Dockerfile for reference)
 
-try building the image as u will `docker build -t python-app:v0.0.2 --build-arg SERVER_BASE_DIR=/ image/`
-try running `docker run -dit -p 8000:8000 --name python python-app:v0.0.2 --directory /usr/local/`
+- You can go ahead and try  building the image as u will, with a default base directory of your choise, here is an example for overriding the default `/usr/local/bin` base directory with the `/` as base directory: 
+`docker build -t python-app:v0.0.2 --build-arg SERVER_BASE_DIR=/ image/`
+- Try running the image localy and setting the directory at runtime: `docker run -dit -p 8000:8000 --name python ghcr.io/omer-avner/pyhton-app:14e4e52a839d8c116309971e387f2e7f72452374 --directory /root`
 
-notice that the entrypoint of the image determines that the http server will *always bind to all interfaces at port 8000* (thats why `EXPOSE 8000/tcp` is mentioned explicitly in the Dockerfile), but since were using an `ENTRYPOINT` instead of a simple `CMD` command were able to add runtime arguments such as `--directory <dir_path>` in order to change the default server base directory (SERVER_BASE_DIR).
-
+Notice that the entrypoint of the image determines that the http server will **always bind to all interfaces at port 8000** (thats why `EXPOSE 8000/tcp` is mentioned explicitly in the Dockerfile). Since were using an `ENTRYPOINT` instead of a simple `CMD` command were able to add runtime arguments such as `--directory <dir_path>` in order to change the default server base directory (SERVER_BASE_DIR).
 
 ## About the application's chart
 
@@ -45,7 +44,7 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 ```
-3. building the image and pushing it- were using a built-in action that uses the `image/Dockerfile` and pushed a new tag based on the current commit's sha.
+3. Building the image and pushing it- were using a built-in action that uses the `image/Dockerfile` and pushed a new tag based on the current commit's sha.
 ```yml
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
@@ -63,6 +62,7 @@ The deploy-chart workflow is a simple cd procedure that either installs or upgra
 2. Checking out the repo- for obvious reasons we need the files in this repo.
 3. Deploying the Helm Chart- since helm uses the kubeconfig data in order to deploy the chart, i've created an enviorment secret named `KUBECONFIG` that contains a base64 of both the data required to authenticate to the eks cluster and the MUST HAVE enviorment vars that we need for the aws CLI auth plugin (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY).
 ```yml
+# kubeconfig snippet
       exec:
          apiVersion: client.authentication.k8s.io/v1alpha1
          command: aws
@@ -81,4 +81,12 @@ The deploy-chart workflow is a simple cd procedure that either installs or upgra
            - name: "AWS_DEFAULT_REGION"
              value: <AWS_REGION>
 ```
- Using this secret we can run a simple helm uppgrade command that either deploys the chart from scratch or upgrades an existing installation: `helm upgrade python-application --install --wait charts/python-application`. 
+ Using this secret we can run a simple helm uppgrade command that either deploys the chart from scratch or upgrades an existing installation.
+```yml
+      - name: helm deploy
+        uses: koslib/helm-eks-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG }}
+        with:
+          command: helm upgrade python-application --install --wait charts/python-application
+``` 
