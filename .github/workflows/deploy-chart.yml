@@ -22,7 +22,7 @@ jobs:
 
       - name: Create KubeConfig
         run: |
-          mkdir $HOME/.kube/
+          mkdir ~/.kube/
           echo ${{ secrets.KUBECONFIG}} > $HOME/.kube/config
 
       - name: Install or Upgrade the chart
