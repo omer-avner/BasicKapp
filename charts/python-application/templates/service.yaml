@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: python-app-service
-  namespace: {{ .Values.pythonApp.tag }}
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     {{- include "pythonApp.labels" . }}
