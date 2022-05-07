@@ -27,7 +27,7 @@ notice that the entrypoint of the image determines that the http server will *al
 ## About the CI/CD workflow
 This repo containes two different workflows:
 - build-and-push-image
-- update-and-deploy-chart
+- deploy-chart
 
 ### build-and-push-image
 The build-and-push workflow is a simple ci procedure that's triggered in any push to main branch that contains changes to the `image` directory. The workflow contains the following steps:
@@ -57,4 +57,5 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
             ghcr.io/omer-avner/pyhton-app:${{ github.sha }}
 ```
 
+### deploy-chart
 
