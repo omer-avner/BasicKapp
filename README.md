@@ -58,4 +58,4 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
 ```
 
 ### deploy-chart
-
+The deploy-chart workflow is a simple cd procedure that either installs or upgrades the application's Helm Chart over an EKS cluster.

@@ -5,7 +5,7 @@ metadata:
   namespace: omer
 spec:
   selector:
-    app: python-app
+    {{- include "pythonApp.labels" . }}
   type: LoadBalancer
   ports:
     - protocol: TCP

@@ -9,11 +9,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "pythonApp.labels" . }}
+      {{- include "pythonApp.labels" . | indent 2 }}
   template:
     metadata:
       labels:
-        {{- include "pythonApp.labels" . }}
+        {{- include "pythonApp.labels" . | indent 4 }}
     spec:
       containers:
       - name: python-app
