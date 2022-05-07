@@ -113,5 +113,5 @@ Lets begin by testing this repo's different workflows:
 - In order to trigger the deploy-chart workflow all we need to do is make changes in the `charts/python-application` fir and push them to main branch. We can try changing the **pythonApp.indexHtml** template in `_helpers.tpl`, this should trigger a helm upgrade, and after restarting the python-application's pod we could see the new html data in our browser.
 
 Now we can try and reach the application trough our own browser:
-1. Run `kubectl get svc -n omer` to get the LB service's hostname. You should see something similer to this: `http://a520894768d35449ba6ef2f15ecbd3c6-219064021.us-east-1.elb.amazonaws.com/`
+1. Run `kubectl get svc -n omer` to get the LB service's hostname. You should see something similer to this: `a520894768d35449ba6ef2f15ecbd3c6-219064021.us-east-1.elb.amazonaws.com`
 2. Search the said hostname in your browser. Since the service is mapped to port 80 you dont even need to specify a certain port. Notice that if u just created a new installation from scratch it might take a few seconeds for the new dns record to take place, in that cenario you might get dns lookup errors from the browser, dont worry about it and keep waiting, relevant errors might be connections timed out and such. ![The app works](/images/working_app.png)
