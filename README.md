@@ -61,5 +61,24 @@ The build-and-push workflow is a simple ci procedure that's triggered in any pus
 The deploy-chart workflow is a simple cd procedure that either installs or upgrades the application's Helm Chart over an EKS cluster. The workflow accures at any push to main branch that containes changes to the `chart/python-application` directory and its composed of the following steps:
 1. Not setting up helm- the assignment was to setup helm but i found a more simple action that runs an image that already contains helm. The helm image is rebuilt at any action trigger, might take longer but its more secure.
 2. Checking out the repo- for obvious reasons we need the files in this repo.
-3. Configuring AWS creds- there are a few MUST HAVE enviorment vars that we need to create for the aws CLI. Helm 
- to create the relevant environment secrets
+3. Deploying the Helm Chart- since helm uses the kubeconfig data in order to deploy the chart, i've created an enviorment secret named `KUBECONFIG` that contains a base64 of both the data required to authenticate to the eks cluster and the MUST HAVE enviorment vars that we need for the aws CLI auth plugin (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY).
+```yml
+      exec:
+         apiVersion: client.authentication.k8s.io/v1alpha1
+         command: aws
+         args:
+           - --region
+           - <AWS_REGION>
+           - eks
+           - get-token
+           - --cluster-name
+           - <CLUSTER_NAME>
+         env:
+           - name: "AWS_ACCESS_KEY_ID"
+             value: <AWS_ACCESS_KEY_ID>
+           - name: "AWS_SECRET_ACCESS_KEY"
+             value: <AWS_SECRET_ACCESS_KEY>
+           - name: "AWS_DEFAULT_REGION"
+             value: <AWS_REGION>
+```
+ Using this secret we can run a simple helm uppgrade command that either deploys the chart from scratch or upgrades an existing installation: `helm upgrade python-application --install --wait charts/python-application`. 
