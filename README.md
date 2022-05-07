@@ -104,4 +104,14 @@ The deploy-chart workflow is a simple cd procedure that either installs or upgra
           KUBE_CONFIG_DATA: ${{ secrets.KUBECONFIG }}
         with:
           command: helm upgrade python-application --install --wait charts/python-application
-``` 
+```
+
+## Testing this repo
+Lets begin by testing this repo's different workflows:
+- In order to trigger the build-and-push-image workflow all we need to do is make changes in the `/image` dir and push them to the main branch. We can try changing the `$SERVER_BASE_DIR` argument in the Dockerfile and a new image will be built and pushed to ghcr.io/omer-avner/pyhton-app repo with the current push's commit sha.
+
+- In order to trigger the deploy-chart workflow all we need to do is make changes in the `charts/python-application` fir and push them to main branch. We can try changing the **pythonApp.indexHtml** template in `_helpers.tpl`, this should trigger a helm upgrade, and after restarting the python-application's pod we could see the new html data in our browser.
+
+Now we can try and reach the application trough our own browser:
+1. Run `kubectl get svc -n omer` to get the LB service's hostname. You should see something similer to this: ![An example to a LB hostname](/images/service_hostname.png)
+2. Search the said hostname in your browser. Since the service is mapped to port 80 you dont even need to specify a certain port. Notice that if u just created a new installation from scratch it might take a few seconeds for the new dns record to take place, in that cenario you might get dns lookup errors from the browser, dont worry about it and keep waiting, relevant errors might be connections timed out and such. ![The app works](/images/working_app.png)
